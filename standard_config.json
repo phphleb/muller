@@ -1,0 +1,18 @@
+{
+  "muller": {
+    "version": "1",
+    "design": "base",
+    "lang": "en",
+    "data": {
+      "name_from": "",
+      "mail_from": "",
+      "debug": 0,
+      "only_file": 0,
+      "params": ""
+    },
+    "all_langs": [
+      "ru",
+      "en"
+    ]
+  }
+}
