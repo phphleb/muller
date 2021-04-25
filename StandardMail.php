@@ -65,15 +65,15 @@ final class StandardMail extends DefaultMail
     protected function savePostInFile() {
         $emails = [];
         $email = $this->convertRecipientsToString();
-        $nammedEmail = $this->convertNamedRecipientsToString();
+        $namedEmail = $this->convertNamedRecipientsToString();
         if (!empty(trim($email))) {
             $emails[] = $email;
         }
-        if (!empty(trim($nammedEmail))) {
-            $emails[] = $nammedEmail;
+        if (!empty(trim($namedEmail))) {
+            $emails[] = $namedEmail;
         }
-        $txtEOL = '
-';
+        $txtEOL = trim('
+        ', ' ');
         $headers = $this->headers;
         $headers['To'] = implode(', ', $emails);
         $content = '======================== Message (' . count($this->to) . ') ========================' . $txtEOL;

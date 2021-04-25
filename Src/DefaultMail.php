@@ -288,7 +288,7 @@ abstract class DefaultMail
      * @return bool
      */
     protected function checkEmailAddress(string $address) {
-        return (bool)preg_match('/^[\w+\._-]+@[\w+\._-]+$/iu', $address);
+        return (bool)preg_match($this->patternMail, $address);
     }
 
     /**
@@ -364,7 +364,7 @@ abstract class DefaultMail
 
     /**
      * Проверка данных для имени пользователя
-     * @param string $list
+     * @param string $name
      * @return bool
      */
     protected function validateName(string $name) {
