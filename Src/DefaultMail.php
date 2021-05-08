@@ -39,7 +39,7 @@ abstract class DefaultMail
     protected $patternUsername = '/^[\w\._\-\s\№\?\@\:\$\+\!\;]+$/iu';
 
     /* Регулярное выражение для проверки E-mail адресата */
-    protected $patternMail = '/^[\w+\._-]+@[\w+\._-]+$/iu';
+    protected $patternMail = '/^[-\w.]+@([A-z0-9][-A-z0-9]+\.)+[A-z]{2,10}$/';
 
     /* Директория для сохранения писем в файлы */
     protected $logDirectory;
