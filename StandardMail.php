@@ -11,11 +11,11 @@ use Phphleb\Muller\Src\Errors;
  * при помощи стандартной PHP-функции mail(...)
  * @package Phphleb\Muller
  */
-final class StandardMail extends DefaultMail
+class StandardMail extends DefaultMail
 {
     private $parameters = null;
 
-    private $standardHeaders = [
+    protected $standardHeaders = [
         'MIME-Version' => '1.0',
         'Content-type' => 'text/html; charset="utf-8"',
         'X-Mailer' => 'Phphleb/Muller'
