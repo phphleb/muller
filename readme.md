@@ -1,6 +1,9 @@
  ## "Muller" is the strict Electronic Postman (PHP Mailer)
 
-The `Muller` is not included in the original configuration of the framework [HLEB](https://github.com/phphleb/hleb), so it must be copied to the folder with the vendor/phphleb  libraries from the [github.com/phphleb/muller](https://github.com/phphleb/muller)  repository or installed using Composer:
+[![HLEB1](https://img.shields.io/badge/HLEB-1-olive)](https://github.com/phphleb/hleb) [![HLEB2](https://img.shields.io/badge/HLEB-2-darkcyan)](https://github.com/phphleb/hleb) ![PHP](https://img.shields.io/badge/PHP-7-blue) ![PHP](https://img.shields.io/badge/PHP-8-blue) [![License: MIT](https://img.shields.io/badge/License-MIT%20(Free)-brightgreen.svg)](https://github.com/phphleb/hleb/blob/master/LICENSE)
+
+
+The `Muller` is not included in the original configuration of the framework [HLEB2](https://github.com/phphleb/hleb), so it must be copied to the folder with the vendor/phphleb  libraries from the [github.com/phphleb/muller](https://github.com/phphleb/muller)  repository or installed using Composer:
 
 ```bash
 $ composer require phphleb/muller

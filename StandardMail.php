@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Phphleb\Muller;
 
 use Phphleb\Muller\Src\DefaultMail;
@@ -11,11 +10,11 @@ use Phphleb\Muller\Src\Errors;
  * при помощи стандартной PHP-функции mail(...)
  * @package Phphleb\Muller
  */
-final class StandardMail extends DefaultMail
+class StandardMail extends DefaultMail
 {
     private $parameters = null;
 
-    private $standardHeaders = [
+    protected $standardHeaders = [
         'MIME-Version' => '1.0',
         'Content-type' => 'text/html; charset="utf-8"',
         'X-Mailer' => 'Phphleb/Muller'
@@ -36,7 +35,7 @@ final class StandardMail extends DefaultMail
         $this->standardDataValidate();
 
         // Проверка наличия ошибок
-        if (count($this->errors)) {
+        if (\count($this->errors)) {
             if ($this->debug) {
                 $this->saveLogInFile();
             }
@@ -55,7 +54,7 @@ final class StandardMail extends DefaultMail
             $this->savePostInFile();
         }
         if (!$this->onlyFile) {
-            return (bool)mail($this->convertRecipientsToString(), trim($this->title), trim($this->messageHtml), $this->convertHeadersToString(), $this->parameters);
+            return (bool)\mail($this->convertRecipientsToString(), \trim($this->title), \trim($this->messageHtml), $this->convertHeadersToString(), $this->parameters);
         }
     }
 
@@ -66,32 +65,32 @@ final class StandardMail extends DefaultMail
         $emails = [];
         $email = $this->convertRecipientsToString();
         $namedEmail = $this->convertNamedRecipientsToString();
-        if (!empty(trim($email))) {
+        if (!empty(\trim($email))) {
             $emails[] = $email;
         }
-        if (!empty(trim($namedEmail))) {
+        if (!empty(\trim($namedEmail))) {
             $emails[] = $namedEmail;
         }
-        $txtEOL = trim('
+        $txtEOL = \trim('
         ', ' ');
         $headers = $this->headers;
-        $headers['To'] = implode(', ', $emails);
-        $content = '======================== Message (' . count($this->to) . ') ========================' . $txtEOL;
-        $content .= 'Date: ' . date(DATE_RFC1123) . $txtEOL;
-        $content .= 'Subject: ' . trim($this->title) . $txtEOL;
+        $headers['To'] = \implode(', ', $emails);
+        $content = '======================== Message (' . \count($this->to) . ') ========================' . $txtEOL;
+        $content .= 'Date: ' . \date(DATE_RFC1123) . $txtEOL;
+        $content .= 'Subject: ' . \trim($this->title) . $txtEOL;
         foreach ($headers as $key => $value) {
             $content .= $key . ': ' . $value . $txtEOL;
         }
         $content .= $txtEOL;
-        $content .= trim($this->messageHtml) . $txtEOL . $txtEOL;
+        $content .= \trim($this->messageHtml) . $txtEOL . $txtEOL;
         try {
-            if (is_dir($this->logDirectory)) {
-                $file = rtrim($this->logDirectory, "\\/ ") . DIRECTORY_SEPARATOR . date('Y-m-d') . '_mail.log';
-                file_put_contents($file, $content, FILE_APPEND);
+            if (\is_dir($this->logDirectory)) {
+                $file = \rtrim($this->logDirectory, "\\/ ") . DIRECTORY_SEPARATOR . \date('Y_m_d') . '_mail.log';
+                \file_put_contents($file, $content, FILE_APPEND);
             }
         } catch (\Exception $exception) {
             $this->errors[] = Errors::ERROR_SAVE_EMAIL_LOG;
-            error_log($exception->getMessage());
+            \error_log($exception->getMessage());
         }
     }
 

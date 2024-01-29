@@ -1,11 +1,12 @@
 {
   "name": "phphleb/muller",
-  "description": "Mailer for Micro-Framework HLEB",
+  "description": "Mailer for PHP Framework HLEB2",
   "type": "library",
   "keywords": [
     "mailer",
     "email",
-    "sender"
+    "sender",
+    "hleb2"
   ],
   "license": "MIT",
   "authors": [

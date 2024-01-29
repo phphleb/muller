@@ -6,6 +6,8 @@ namespace Phphleb\Muller\Src;
 
 abstract class DefaultMail
 {
+    public const ALL_DESIGN = ['base', 'dark'];
+
     /* Значение для возможности множественных адресатов отправки */
     protected static $multiple = false;
 
@@ -20,8 +22,6 @@ abstract class DefaultMail
 
     /* Контент письма */
     protected $messageHtml;
-
-    protected $designs = ['base', 'dark'];
 
     /* Отладочный режим */
     protected $debug = false;
@@ -123,7 +123,7 @@ abstract class DefaultMail
      * @param string $messageHtml
      */
     public function setContent(string $messageHtml) {
-        if (is_null($this->design) && is_null($this->messageHtml)) {
+        if ($this->design === null && $this->messageHtml === null) {
             $this->messageHtml = $messageHtml;
         }
     }
@@ -164,7 +164,7 @@ abstract class DefaultMail
      * @param string|null $name - имя пользователя
      */
     public function setTo(string $mail, $name = null) {
-        $this->createRecipient([(!is_null($name) ? $name : 0) => $mail]);
+        $this->createRecipient([(!\is_null($name) ? $name : 0) => $mail]);
     }
 
     /**
@@ -172,7 +172,7 @@ abstract class DefaultMail
      * @return array|false
      */
     public function getErrors() {
-        return count($this->errors) ? $this->errors : false;
+        return \count($this->errors) ? $this->errors : false;
     }
 
     /**
@@ -180,7 +180,7 @@ abstract class DefaultMail
      * @return string|false
      */
     public function getLastError() {
-        return count($this->errors) ? end($this->errors) : false;
+        return \count($this->errors) ? \end($this->errors) : false;
     }
 
     /**
@@ -188,7 +188,7 @@ abstract class DefaultMail
      * @return string|false
      */
     public function getFirstError() {
-        return count($this->errors) ? $this->errors[0] : false;
+        return \count($this->errors) ? $this->errors[0] : false;
     }
 
     /**
@@ -260,8 +260,8 @@ abstract class DefaultMail
      * @param string $messageText
      */
     public function setMessage(string $design, string $messageText) {
-        if (is_null($this->design) && is_null($this->messageHtml)) {
-            $this->design = in_array($design, $this->designs) ? $design : $this->designs[0];
+        if (\is_null($this->design) && \is_null($this->messageHtml)) {
+            $this->design = \in_array($design, self::ALL_DESIGN) ? $design : self::ALL_DESIGN[0];
             $this->messageHtml = $messageText;
         }
     }
@@ -288,7 +288,7 @@ abstract class DefaultMail
      * @return bool
      */
     protected function checkEmailAddress(string $address) {
-        return (bool)preg_match($this->patternMail, $address);
+        return (bool)\preg_match($this->patternMail, $address);
     }
 
     /**
@@ -297,13 +297,13 @@ abstract class DefaultMail
      */
     protected function createRecipient(array $list) {
         foreach ($list as $key => $value) {
-            if (is_int($key)) {
+            if (\is_int($key)) {
                 $this->to [] = [0 => $value];
-            } else if (is_string($key)) {
+            } else if (\is_string($key)) {
                 $this->checkName($key);
                 $this->to [] = [$key => $value];
             } else {
-                $this->errors[] = sprintf(Errors::ERROR_NAME_FORMAT, gettype($key));
+                $this->errors[] = \sprintf(Errors::ERROR_NAME_FORMAT, \gettype($key));
             }
         }
     }
@@ -316,13 +316,13 @@ abstract class DefaultMail
         $list = [];
         foreach ($this->to as $item) {
             foreach ($item as $key => $value) {
-                if (is_int($key)) {
+                if (\is_int($key)) {
                     $list[] = $value;
                 }
                 break;
             }
         }
-        return implode(', ', $list);
+        return \implode(', ', $list);
     }
 
     /**
@@ -333,13 +333,13 @@ abstract class DefaultMail
         $list = [];
         foreach ($this->to as $item) {
             foreach ($item as $key => $value) {
-                if (!is_int($key)) {
+                if (!\is_int($key)) {
                     $list[] = $key . ' <' . $value . '>';
                 }
                 break;
             }
         }
-        return (string)implode(', ', $list);
+        return (string)\implode(', ', $list);
     }
 
     /**
@@ -348,7 +348,7 @@ abstract class DefaultMail
      */
     protected function checkName($name) {
         if (!$this->validateName($name)) {
-            $this->errors[] = sprintf(Errors::ERROR_VALIDATE_NAME, htmlspecialchars($name));
+            $this->errors[] = \sprintf(Errors::ERROR_VALIDATE_NAME, \htmlspecialchars($name));
         }
     }
 
@@ -358,7 +358,7 @@ abstract class DefaultMail
      */
     protected function checkEmail($mail) {
         if (!$this->checkEmailAddress($mail)) {
-            $this->errors[] = sprintf(Errors::ERROR_VALIDATE_EMAIL, htmlspecialchars($mail));
+            $this->errors[] = \sprintf(Errors::ERROR_VALIDATE_EMAIL, \htmlspecialchars($mail));
         }
     }
 
@@ -368,7 +368,7 @@ abstract class DefaultMail
      * @return bool
      */
     protected function validateName(string $name) {
-        return (bool)preg_match($this->patternUsername, $name);
+        return (bool)\preg_match($this->patternUsername, $name);
     }
 
     /**
@@ -399,17 +399,17 @@ abstract class DefaultMail
      */
     protected function standardDataValidate() {
         // Проверка наличия E-mail адресата
-        if (!count($this->to)) {
+        if (!\count($this->to)) {
             $this->errors[] = Errors::ERROR_EMAIL_ADDRESS_NOT_SPECIFIED;
         }
 
         // Проверка разрешения множественных адресатов
-        if (count($this->to) > 1 && !self::$multiple) {
+        if (\count($this->to) > 1 && !self::$multiple) {
             $this->errors[] = Errors::ERROR_MULTIPLE_RECIPIENTS_ARE_PROHIBITED;
         }
 
         // Проверка наличия заголовка для письма
-        if (is_null($this->title) || empty(trim($this->title))) {
+        if ($this->title === null || empty(\trim($this->title))) {
             $this->errors[] = Errors::ERROR_TITLE_MISSING;
         }
 
@@ -424,7 +424,7 @@ abstract class DefaultMail
         }
 
         // Проверка наличия контента для письма
-        if (is_null($this->messageHtml) || empty(trim($this->messageHtml))) {
+        if ($this->messageHtml === null || empty(trim($this->messageHtml))) {
             $this->errors[] = Errors::ERROR_CONTENT_MISSING;
         }
 
@@ -454,22 +454,22 @@ abstract class DefaultMail
      */
     protected function saveLogInFile() {
         try {
-            if ($this->debugPath && is_dir($this->debugPath)) {
-                $file = $this->debugPath . DIRECTORY_SEPARATOR . date('Y_m_d') . '_mail.error.log';
-                $save = file_put_contents($file, '[' . date('Y-m-d H:i:s') . '] ' . Errors::ERROR_SEND_EMAIL . PHP_EOL, FILE_APPEND);
+            if ($this->debugPath && \is_dir($this->debugPath)) {
+                $file = $this->debugPath . DIRECTORY_SEPARATOR . \date('Y_m_d') . '_mail.error.log';
+                $save = \file_put_contents($file, '[' . \date('Y-m-d H:i:s') . '] ' . Errors::ERROR_SEND_EMAIL . PHP_EOL, FILE_APPEND);
                 if ($save) {
                     $num = 0;
                     foreach ($this->errors as $error) {
-                        file_put_contents($file, ' #' . ++$num . ' ' . $error . PHP_EOL, FILE_APPEND);
+                        \file_put_contents($file, ' #' . ++$num . ' ' . $error . PHP_EOL, FILE_APPEND);
                     }
                 }
-                file_put_contents($file, PHP_EOL, FILE_APPEND);
+                \file_put_contents($file, PHP_EOL, FILE_APPEND);
             } else {
                 $this->errors[] = Errors::ERROR_SAVE_EMAIL_LOG;
             }
         } catch (\Exception $exception) {
             $this->errors[] = Errors::ERROR_SAVE_EMAIL_LOG;
-            error_log($exception->getMessage());
+            \error_log($exception->getMessage());
             return false;
         }
         return true;
@@ -486,11 +486,11 @@ abstract class DefaultMail
     protected function createHtmlTemplate() {
         if (empty($this->design)) return;
 
-        if (!file_exists(__DIR__ . '/../Templates/' . $this->design . '.php')) {
+        if (!\file_exists(__DIR__ . '/../Templates/' . $this->design . '.php')) {
             $this->design = 'base';
         }
         $designFile = __DIR__ . '/../Templates/' . $this->design . '.php';
-        if (file_exists($designFile)) {
+        if (\file_exists($designFile)) {
             $templateTitle = $this->title;
             $templateContent = $this->messageHtml;
             $templateCharset = $this->charset;
@@ -500,10 +500,10 @@ abstract class DefaultMail
             if (!empty($_SERVER['HTTP_HOST'])) {
                 $templateSite = $_SERVER['HTTP_HOST'];
             }
-            ob_start();
+            \ob_start();
             require "$designFile";
-            $result = ob_get_contents();
-            ob_end_clean();
+            $result = \ob_get_contents();
+            \ob_end_clean();
             $this->messageHtml = $result;
         } else {
             $this->errors[] = Errors::ERROR_LACK_OF_BASIC_DESIGN;

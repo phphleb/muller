@@ -63,13 +63,6 @@
           </font>
           </div>
            </td>
-            <td style="padding-right:12px">
-              <div align="right">
-                 <a href="https://github.com/phphleb/muller" style="text-decoration:none">
-                   <font color="#666666">&Muller</font>
-                </a>
-              </div>
-            </td>
         </tr>
      </table>
     </td>
